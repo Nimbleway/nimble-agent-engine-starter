@@ -9,22 +9,7 @@ features:
   durable_workflow: true
   memory: false
 
-# Nimble's hosted MCP server. Only search and extract are exposed to the agent.
-mcp:
-  servers:
-    nimble:
-      transport: streamable_http
-      url: https://mcp.nimbleway.com/mcp
-      headers:
-        X-Client-Source: mongodb-atlas-agent-engine
-      auth:
-        type: bearer_env
-        token_env: NIMBLE_API_KEY
-      allowed_tools: [nimble_search, nimble_extract]
-      timeout_seconds: 60
-
-# MCP discovery runs in the agent sandbox; MCP calls, model calls and the
-# research tool run in the tool sandbox. Both get the same keys and hosts.
+# Model calls and the Nimble tools run in the tool sandbox.
 sandboxes:
   agent:
     secrets: [NIMBLE_API_KEY, LLM_API_KEY]
@@ -34,13 +19,30 @@ sandboxes:
       egress: &egress
         - fqdn: api.openai.com  # change if you change the LLM in llm.py
           ports: [443]
-        - fqdn: mcp.nimbleway.com
-          ports: [443]
         - fqdn: sdk.nimbleway.com
           ports: [443]
+        # - fqdn: mcp.nimbleway.com  # only with the MCP alternative below
+        #   ports: [443]
   tool:
     secrets: [NIMBLE_API_KEY, LLM_API_KEY]
-    tools: [research]
+    tools: [nimble_search, nimble_extract, nimble_research]
     network:
       egress_mode: allow_list
       egress: *egress
+
+# Alternative: use Nimble's hosted MCP server for search and extract instead of
+# the SDK tools. Uncomment this block and the mcp.nimbleway.com egress entry,
+# then remove nimble_search and nimble_extract from tools.py and from
+# sandboxes.tool.tools so the agent does not see duplicate tools.
+# mcp:
+#   servers:
+#     nimble:
+#       transport: streamable_http
+#       url: https://mcp.nimbleway.com/mcp
+#       headers:
+#         X-Client-Source: mongodb-atlas-agent-engine
+#       auth:
+#         type: bearer_env
+#         token_env: NIMBLE_API_KEY
+#       allowed_tools: [nimble_search, nimble_extract]
+#       timeout_seconds: 60
