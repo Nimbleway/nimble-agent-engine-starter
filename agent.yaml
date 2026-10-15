@@ -1,0 +1,46 @@
+# Human-readable app slug used by Agent Engine tooling.
+name: nimble-web-agent
+
+# Python import path to the SDK App instance.
+entrypoint: hello_world_agent.main:app
+framework: langgraph
+
+features:
+  durable_workflow: true
+  memory: false
+
+# Nimble's hosted MCP server. Only search and extract are exposed to the agent.
+mcp:
+  servers:
+    nimble:
+      transport: streamable_http
+      url: https://mcp.nimbleway.com/mcp
+      headers:
+        X-Client-Source: mongodb-atlas-agent-engine
+      auth:
+        type: bearer_env
+        token_env: NIMBLE_API_KEY
+      allowed_tools: [nimble_search, nimble_extract]
+      timeout_seconds: 60
+
+# MCP discovery runs in the agent sandbox; MCP calls, model calls and the
+# research tool run in the tool sandbox. Both get the same keys and hosts.
+sandboxes:
+  agent:
+    secrets: [NIMBLE_API_KEY, LLM_API_KEY]
+    tools: []
+    network:
+      egress_mode: allow_list
+      egress: &egress
+        - fqdn: api.openai.com  # change if you change the LLM in llm.py
+          ports: [443]
+        - fqdn: mcp.nimbleway.com
+          ports: [443]
+        - fqdn: sdk.nimbleway.com
+          ports: [443]
+  tool:
+    secrets: [NIMBLE_API_KEY, LLM_API_KEY]
+    tools: [research]
+    network:
+      egress_mode: allow_list
+      egress: *egress
