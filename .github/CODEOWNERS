@@ -1,0 +1,11 @@
+/src/                 @ilchemla
+/.github/             @ilchemla
+/agent.yaml           @ilchemla
+/dev.yaml             @ilchemla
+/env.example          @ilchemla
+/pyproject.toml       @ilchemla
+/pyrightconfig.json   @ilchemla
+/uv.toml              @ilchemla
+/README.md            @ilchemla
+/LICENSE              @ilchemla
+/.gitignore           @ilchemla

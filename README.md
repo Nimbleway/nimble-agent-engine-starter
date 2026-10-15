@@ -1,6 +1,6 @@
-# Nimble Web Agent for Atlas Agent Engine
+# Nimble Web Agent for MongoDB Atlas Agent Engine
 
-Give your [Atlas Agent Engine](https://www.mongodb.com/docs/agentengine/) agent live web data from Nimble.
+Give your [MongoDB Atlas Agent Engine](https://www.mongodb.com/docs/agentengine/) agent live web data from Nimble.
 
 This starter agent searches the web, reads pages and runs multi-step web research with [Nimble](https://nimbleway.com), and cites its sources. It is built from MongoDB's [`hello-world-agent`](https://github.com/mongodb/agent-engine-examples/tree/main/templates/hello-world-agent) template (Apache-2.0) and modified to add Nimble.
 
