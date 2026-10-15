@@ -6,8 +6,13 @@ This starter agent searches the web, reads pages and runs multi-step web researc
 
 ## What it uses
 
-- **Search and extract:** Nimble's hosted [MCP server](https://docs.nimbleway.com/integrations/mcp-server/mcp-server), declared in `agent.yaml`. No tool code.
-- **Research:** one small tool in `src/hello_world_agent/tools.py` that runs a Nimble Web Search Agent and waits for the cited answer.
+Three tools in `src/hello_world_agent/tools.py`, built on the [Nimble Python SDK](https://pypi.org/project/nimble-python/):
+
+- `nimble_search`: search the live web.
+- `nimble_extract`: read a page as markdown.
+- `nimble_research`: run a Nimble Web Search Agent and wait for the cited answer.
+
+Prefer MCP? `agent.yaml` has a commented block that uses Nimble's hosted [MCP server](https://docs.nimbleway.com/integrations/mcp-server/mcp-server) for search and extract instead.
 
 ## Run locally
 
