@@ -15,8 +15,7 @@ class _App:
         return add
 
 
-def test_research_resume_without_agent_id_returns_error(monkeypatch):
-    monkeypatch.setenv("NIMBLE_API_KEY", "test-key")
+def test_research_resume_without_agent_id_returns_error():
     app = _App()
     register(app)
 
