@@ -39,11 +39,14 @@ Deploying needs the Project Owner role.
 
 ```bash
 agentengine init
+agentengine atlas setup
 agentengine secret set LLM_API_KEY --workspace-scope
 agentengine secret set NIMBLE_API_KEY --workspace-scope
 agentengine build
 agentengine deploy
 ```
+
+`agentengine atlas setup` links the workspace to an Atlas cluster, stores `MONGODB_URI` for the deployed agent and adds Atlas Agent Engine to the cluster's IP access list. See [Set Up Atlas Resources](https://www.mongodb.com/docs/agentengine/deploy/atlas-setup/).
 
 ## Good to know
 
