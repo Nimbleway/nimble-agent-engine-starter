@@ -51,6 +51,8 @@ def register(app: App) -> None:
         Returns a cited answer. If the reply has status "running", call again
         with its run_id and agent_id to keep waiting.
         """
+        if run_id and not agent_id:
+            return json.dumps({"error": "pass both run_id and agent_id from the running reply"})
         deadline = time.monotonic() + WAIT_SECONDS
         client = _client()
         try:
