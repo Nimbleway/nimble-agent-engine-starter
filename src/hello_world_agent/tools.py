@@ -1,4 +1,4 @@
-"""Nimble web tools: search, extract and Web Search Agent research."""
+"""Nimble web tools: search, extract and Nimble Agent research."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def register(app: App) -> None:
 
     @app.tool()
     def nimble_research(question: str = "", run_id: str = "", agent_id: str = "") -> str:
-        """Research a question on the live web with a Nimble Web Search Agent.
+        """Research a question on the live web with a Nimble Agent.
 
         Returns a cited answer. If the reply has status "running", call again
         with its run_id and agent_id to keep waiting.
