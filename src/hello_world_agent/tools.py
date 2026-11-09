@@ -64,6 +64,8 @@ def register(app: App) -> None:
             effort: How deep the research goes. One of low, medium, high,
                 x-high, max. Defaults to low (about 1 minute).
             agent_name: Optional name to reuse a persistent agent across calls.
+                All callers sharing the same API key and name share the agent's
+                memory. Scope the name per user in multi-tenant deployments.
         """
         if run_id and not agent_id:
             return json.dumps({"error": "pass both run_id and agent_id from the running reply"})
