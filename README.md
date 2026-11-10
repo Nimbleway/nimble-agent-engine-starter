@@ -10,7 +10,7 @@ Three tools in `src/hello_world_agent/tools.py`, built on the [Nimble Python SDK
 
 - `nimble_search`: search the live web.
 - `nimble_extract`: read a page as markdown.
-- `nimble_research`: run a Nimble Web Search Agent and wait for the cited answer.
+- `nimble_research`: run a Nimble Agent and wait for the cited answer.
 
 Prefer MCP? `agent.yaml` has a commented block that uses Nimble's hosted [MCP server](https://docs.nimbleway.com/integrations/mcp-server/mcp-server) for search and extract instead.
 
@@ -39,11 +39,14 @@ Deploying needs the Project Owner role.
 
 ```bash
 agentengine init
+agentengine atlas setup
 agentengine secret set LLM_API_KEY --workspace-scope
 agentengine secret set NIMBLE_API_KEY --workspace-scope
 agentengine build
 agentengine deploy
 ```
+
+`agentengine atlas setup` links the workspace to an Atlas cluster, stores `MONGODB_URI` for the deployed agent and adds Atlas Agent Engine to the cluster's IP access list. See [Set Up Atlas Resources](https://www.mongodb.com/docs/agentengine/deploy/atlas-setup/).
 
 ## Good to know
 

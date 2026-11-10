@@ -1,4 +1,4 @@
-"""Nimble web tools: search, extract and Web Search Agent research."""
+"""Nimble web tools: search, extract and Nimble Agent research."""
 
 from __future__ import annotations
 
@@ -45,19 +45,40 @@ def register(app: App) -> None:
         return (response.data.markdown or "")[:MAX_PAGE_CHARS]
 
     @app.tool()
-    def nimble_research(question: str = "", run_id: str = "", agent_id: str = "") -> str:
-        """Research a question on the live web with a Nimble Web Search Agent.
+    def nimble_research(
+        question: str = "",
+        run_id: str = "",
+        agent_id: str = "",
+        effort: str = "low",
+        agent_name: str = "",
+    ) -> str:
+        """Research a question on the live web with a Nimble Agent.
 
         Returns a cited answer. If the reply has status "running", call again
         with its run_id and agent_id to keep waiting.
+
+        Args:
+            question: The research question.
+            run_id: Run ID from a previous "running" reply, to resume polling.
+            agent_id: Agent ID from a previous "running" reply.
+            effort: How deep the research goes. One of low, medium, high,
+                x-high, max. Defaults to low (about 1 minute).
+            agent_name: Optional name to reuse a persistent agent across calls.
+                All callers sharing the same API key and name share the agent's
+                memory. Scope the name per user in multi-tenant deployments.
         """
+        if run_id and not agent_id:
+            return json.dumps({"error": "pass both run_id and agent_id from the running reply"})
         deadline = time.monotonic() + WAIT_SECONDS
         client = _client()
         try:
             if not run_id:
                 if not question:
                     return json.dumps({"error": "question is required"})
-                run = client.agents.run(input=question, effort="low")
+                kwargs: dict = {"input": question, "effort": effort}
+                if agent_name:
+                    kwargs["agent_name"] = agent_name
+                run = client.agents.run(**kwargs)
                 run_id, agent_id = run.id, run.web_search_agent_id
             while time.monotonic() < deadline:
                 run = client.agents.runs.get(run_id, agent_id=agent_id)
